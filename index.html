@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Malzeme Transferi</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #2c2c2c;
+    }
+
+    .baslik {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      margin: 40px 20px 10px;
+    }
+
+    .teknisyen-panel {
+      margin-bottom: 40px;
+      background: linear-gradient(to right, #484848, #2c2c2c);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    nav {
+      background-color: #009688;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .nav-left {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .nav-right a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      margin-right: 20px;
+      cursor: pointer;
+    }
+
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .dropdown > span {
+      cursor: pointer;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      color: black;
+      min-width: 180px;
+      top: 30px;
+      right: 0;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+
+    .dropdown-content a {
+      display: block;
+      padding: 10px;
+      text-decoration: none;
+      color: black;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    .profile-bar {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      color: white;
+    }
+
+    .profile-img {
+      width: 60px;
+      height: 60px;
+      background-color: white;
+      border-radius: 50%;
+      margin-right: 15px;
+    }
+
+    .profile-name {
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .status-boxes {
+      display: flex;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .status-box {
+      padding: 15px;
+      min-width: 120px;
+      text-align: center;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+    }
+
+    .gray { background-color: #999; }
+    .teal { background-color: #00bfa5; }
+    .green { background-color: #43a047; }
+
+    .panel-body {
+      padding: 20px;
+    }
+
+    .form-section {
+      margin-top: 10px;
+      background-color: #009688;
+      padding: 20px;
+      border-radius: 6px;
+      color: white;
+      display: none;
+    }
+
+    .input-section {
+      display: none;
+      background-color: #e0f2f1;
+      color: black;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 6px;
+    }
+
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+
+    input {
+      padding: 8px;
+      width: 100%;
+      max-width: 300px;
+      border-radius: 4px;
+      border: none;
+      background-color: #fff;
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+<div class="baslik">Malzemeyi Veren Teknisyen</div>
+<div class="teknisyen-panel">
+  <nav>
+    <div class="nav-left">eCOM Touch</div>
+    <div class="nav-right">
+      <a href="#">Ana Sayfa</a>
+      <a href="#">İşlemler</a>
+      <div class="dropdown">
+        <span>Araçlar ⌄</span>
+        <div class="dropdown-content">
+          <a href="javascript:void(0);" onclick="showForm('xyz')">Teknisyenden Teknisyene Transfer</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="profile-bar">
+    <div class="profile-img"></div>
+    <div class="profile-name">XYZ</div>
+    <div class="status-boxes">
+      <div class="status-box gray">İşlem Görmüş<br>1</div>
+      <div class="status-box teal">Açık Fiş<br>3</div>
+      <div class="status-box green">İşlem Detay</div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="form-section" id="form-xyz">Transfer işlemi yapmak için aşağıdan bilgileri doldurun.</div>
+    <div class="input-section" id="input-xyz">
+      <label>Malzeme Kodu:</label>
+      <input type="text">
+      <label>Adet:</label>
+      <input type="number">
+      <label>Fiş No:</label>
+      <input type="text">
+      <button>Onaya Gönder</button>
+    </div>
+  </div>
+</div>
+
+<div class="baslik">Malzemeyi Alan Teknisyen</div>
+<div class="teknisyen-panel">
+  <nav>
+    <div class="nav-left">eCOM Touch</div>
+    <div class="nav-right">
+      <a href="#">Ana Sayfa</a>
+      <a href="#">İşlemler</a>
+      <div class="dropdown">
+        <span>Araçlar ⌄</span>
+        <div class="dropdown-content">
+          <a href="javascript:void(0);" onclick="showForm('abc')">Teknisyenden Teknisyene Transfer</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="profile-bar">
+    <div class="profile-img"></div>
+    <div class="profile-name">ABC</div>
+    <div class="status-boxes">
+      <div class="status-box gray">İşlem Görmüş<br>0</div>
+      <div class="status-box teal">Açık Fiş<br>4</div>
+      <div class="status-box green">İşlem Detay</div>
+    </div>
+  </div>
+
+  <div class="panel-body">
+    <div class="form-section" id="form-abc">Transfer işlemi yapmak için aşağıdan bilgileri doldurun.</div>
+    <div class="input-section" id="input-abc">
+      <label>Malzeme Kodu:</label>
+      <input type="text">
+      <label>Adet:</label>
+      <input type="number">
+      <label>Fiş No:</label>
+      <input type="text">
+      <button>Onaya Gönder</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  function showForm(teknisyen) {
+    document.getElementById("form-" + teknisyen).style.display = "block";
+    document.getElementById("input-" + teknisyen).style.display = "block";
+  }
+</script>
+
+</body>
+</html>
