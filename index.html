@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Malzeme Transferi</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #2c2c2c;
+    }
+    .baslik {
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      margin: 40px 20px 10px;
+    }
+    .teknisyen-panel {
+      margin-bottom: 40px;
+      background: linear-gradient(to right, #484848, #2c2c2c);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    nav {
+      background-color: #009688;
+      color: white;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .nav-left {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .nav-right a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      margin-right: 20px;
+      cursor: pointer;
+    }
+    .dropdown {
+      position: relative;
+      display: inline-block;
+    }
+    .dropdown > span {
+      cursor: pointer;
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      color: black;
+      min-width: 180px;
+      top: 30px;
+      right: 0;
+      box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+      z-index: 10;
+    }
+    .dropdown-content a {
+      display: block;
+      padding: 10px;
+      text-decoration: none;
+      color: black;
+      font-size: 14px;
+      cursor: pointer;
+    }
+    .profile-bar {
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      color: white;
+    }
+    .profile-img {
+      width: 60px;
+      height: 60px;
+      background-color: white;
+      border-radius: 50%;
+      margin-right: 15px;
+    }
+    .profile-name {
+      font-size: 20px;
+      font-weight: bold;
+    }
+    .status-boxes {
+      display: flex;
+      gap: 10px;
+      margin-left: auto;
+    }
+    .status-box {
+      padding: 15px;
+      min-width: 120px;
+      text-align: center;
+      color: white;
+      font-weight: bold;
+      border-radius: 8px;
+    }
+    .gray { background-color: #999; }
+    .teal { background-color: #00bfa5; }
+    .green { background-color: #43a047; }
+    .panel-body {
+      padding: 20px;
+    }
+    .form-section,
+    .input-section,
+    .pending-approvals {
+      display: none;
+    }
+    .form-section {
+      background-color: #009688;
+      padding: 20px;
+      border-radius: 6px;
+      color: white;
+      margin-top: 10px;
+    }
+    .input-section {
+      background-color: #e0f2f1;
+      color: black;
+      padding: 15px;
+      margin-top: 10px;
+      border-radius: 6px;
+    }
+    .pending-approvals {
+      color: white;
+      font-weight: bold;
+      margin-top: 10px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+    }
+    input {
+      padding: 8px;
+      width: 100%;
+      max-width: 300px;
+      border-radius: 4px;
+      border: none;
+      background-color: #fff;
+    }
+    button {
+      margin-top: 15px;
+      padding: 10px 20px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    table {
+      width: 90%;
+      margin: 20px auto;
+      border-collapse: collapse;
+      background-color: #fff;
+      color: #000;
+    }
+    th, td {
+      border: 1px solid #333;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    th {
+      background-color: #eee;
+    }
+    .pending-box {
+      margin-bottom: 10px;
+      background-color: #004d40;
+      padding: 10px;
+      border-radius: 6px;
+    }
+    .pending-box button {
+      margin-right: 10px;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+<body>
+<!-- Teknisyen XYZ Paneli -->
+<div class="baslik">Malzemeyi Veren Teknisyen</div>
+<div class="teknisyen-panel">
+  <nav>
+    <div class="nav-left"></div>
+    <div class="nav-right">
+      <a href="#" onclick="closeDropdowns('xyz')">Ana Sayfa</a>
+      <div class="dropdown">
+        <span onclick="toggleDropdown(this)">Araçlar ⌄</span>
+        <div class="dropdown-content">
+          <a href="javascript:void(0);" onclick="showForm('xyz')">Teknisyenden Teknisyene Transfer</a>
+          <a href="javascript:void(0);" onclick="toggleStock('xyz')">Araç Stoğu</a>
+          <a href="javascript:void(0);" onclick="showPendingApprovals('xyz')">Onay Bekleyen İşlemler</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="profile-bar">
+    <div class="profile-img"></div>
+    <div class="profile-name">XYZ</div>
+    <div class="status-boxes">
+      <div class="status-box gray">İşlem Görmüş<br>1</div>
+      <div class="status-box teal">Açık Fiş<br>3</div>
+      <div class="status-box green">İşlem Detay</div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="form-section" id="form-xyz">Transfer işlemi yapmak için aşağıdan bilgileri doldurun.</div>
+    <div class="input-section" id="input-xyz">
+      <label>Teknisyen Numarası:</label>
+      <input type="text">
+      <label>Malzeme Kodu:</label>
+      <input type="text">
+      <label>Adet:</label>
+      <input type="number">
+      <label>Fiş No:</label>
+      <input type="text">
+      <button onclick="validateAndSubmit('xyz')">Onaya Gönder</button>
+    </div>
+    <div class="pending-approvals" id="pending-xyz"></div>
+  </div>
+</div>
+
+<table id="stok-xyz" style="display:none;">
+  <thead>
+    <tr><th colspan="3">Araç Stoğu</th></tr>
+    <tr><th>Malzeme Kodu</th><th>Adı</th><th>Adet</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>112233</td><td>Pompa Motoru</td><td>2</td></tr>
+    <tr><td>223344</td><td>Filtre Seti</td><td>3</td></tr>
+    <tr><td>334455</td><td>Fan Motoru</td><td>0</td></tr>
+    <tr><td>445566</td><td>Kompresör</td><td>1</td></tr>
+    <tr><td>667788</td><td>Amortisör</td><td>4</td></tr>
+    <tr><td>778899</td><td>Temizleyici</td><td>5</td></tr>
+  </tbody>
+</table>
+
+<!-- Teknisyen ABC Paneli -->
+<div class="baslik">Malzemeyi Alan Teknisyen</div>
+<div class="teknisyen-panel">
+  <nav>
+    <div class="nav-left"></div>
+    <div class="nav-right">
+      <a href="#" onclick="closeDropdowns('abc')">Ana Sayfa</a>
+      <div class="dropdown">
+        <span onclick="toggleDropdown(this)">Araçlar ⌄</span>
+        <div class="dropdown-content">
+          <a href="javascript:void(0);" onclick="showForm('abc')">Teknisyenden Teknisyene Transfer</a>
+          <a href="javascript:void(0);" onclick="toggleStock('abc')">Araç Stoğu</a>
+          <a href="javascript:void(0);" onclick="showPendingApprovals('abc')">Onay Bekleyen İşlemler</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+  <div class="profile-bar">
+    <div class="profile-img"></div>
+    <div class="profile-name">ABC</div>
+    <div class="status-boxes">
+      <div class="status-box gray">İşlem Görmüş<br>0</div>
+      <div class="status-box teal">Açık Fiş<br>4</div>
+      <div class="status-box green">İşlem Detay</div>
+    </div>
+  </div>
+  <div class="panel-body">
+    <div class="form-section" id="form-abc">Transfer işlemi yapmak için aşağıdan bilgileri doldurun.</div>
+    <div class="input-section" id="input-abc">
+      <label>Teknisyen Numarası:</label>
+      <input type="text">
+      <label>Malzeme Kodu:</label>
+      <input type="text">
+      <label>Adet:</label>
+      <input type="number">
+      <label>Fiş No:</label>
+      <input type="text">
+      <button onclick="validateAndSubmit('abc')">Onaya Gönder</button>
+    </div>
+    <div class="pending-approvals" id="pending-abc"></div>
+  </div>
+</div>
+
+<table id="stok-abc" style="display:none;">
+  <thead>
+    <tr><th colspan="3">Araç Stoğu</th></tr>
+    <tr><th>Malzeme Kodu</th><th>Adı</th><th>Adet</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>112233</td><td>Pompa Motoru</td><td>1</td></tr>
+    <tr><td>223344</td><td>Filtre Seti</td><td>5</td></tr>
+    <tr><td>334455</td><td>Fan Motoru</td><td>2</td></tr>
+    <tr><td>445566</td><td>Kompresör</td><td>3</td></tr>
+    <tr><td>667788</td><td>Amortisör</td><td>0</td></tr>
+    <tr><td>778899</td><td>Temizleyici</td><td>2</td></tr>
+  </tbody>
+</table>
+<script>
+const pendingTransfers = [];
+
+function showForm(teknisyen) {
+  hideAll(teknisyen);
+  document.getElementById("form-" + teknisyen).style.display = "block";
+  document.getElementById("input-" + teknisyen).style.display = "block";
+}
+
+function toggleDropdown(element) {
+  const dropdown = element.nextElementSibling;
+  dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+}
+
+function closeDropdowns(teknisyen) {
+  document.querySelectorAll('.dropdown-content').forEach(el => el.style.display = 'none');
+  hideAll(teknisyen);
+}
+
+function hideAll(teknisyen) {
+  document.getElementById("form-" + teknisyen).style.display = 'none';
+  document.getElementById("input-" + teknisyen).style.display = 'none';
+  document.getElementById("stok-" + teknisyen).style.display = 'none';
+  document.getElementById("pending-" + teknisyen).style.display = 'none';
+}
+
+function toggleStock(teknisyen) {
+  hideAll(teknisyen);
+  const stok = document.getElementById("stok-" + teknisyen);
+  stok.style.display = (stok.style.display === 'table') ? 'none' : 'table';
+}
+
+function validateAndSubmit(teknisyen) {
+  const container = document.getElementById("input-" + teknisyen);
+  const inputs = container.querySelectorAll("input");
+  let values = {};
+
+  inputs.forEach(input => {
+    values[input.previousElementSibling.innerText.trim()] = input.value.trim();
+  });
+
+  const targetTech = values["Teknisyen Numarası:"].toLowerCase();
+  if ((teknisyen === "xyz" && targetTech !== "abc") ||
+      (teknisyen === "abc" && targetTech !== "xyz")) {
+    alert("⚠️ İlgili teknisyenin numarasını doğru giriniz.");
+    return;
+  }
+
+  const tanimliMalzemeler = ["112233", "223344", "334455", "445566", "667788", "778899"];
+  const malzemeKodu = values["Malzeme Kodu:"];
+  if (!tanimliMalzemeler.includes(malzemeKodu)) {
+    alert("⚠️ Girdiğiniz malzeme kodu geçersiz. Lütfen tanımlı bir kod giriniz.");
+    return;
+  }
+
+  const adet = parseInt(values["Adet:"], 10);
+  if (isNaN(adet) || adet <= 0) {
+    alert("⚠️ Adet pozitif bir sayı olmalıdır.");
+    return;
+  }
+
+  const fisNo = values["Fiş No:"];
+  if (!/^\d{9}$/.test(fisNo)) {
+    alert("⚠️ Fiş No sadece rakamlardan oluşmalı ve 9 haneli olmalıdır.");
+    return;
+  }
+
+  pendingTransfers.push({
+    from: teknisyen,
+    to: targetTech,
+    material: malzemeKodu,
+    quantity: adet,
+    fisNo: fisNo
+  });
+
+  alert(`✅ Transfer talebiniz gönderildi.\nMalzeme: ${malzemeKodu} (${adet} adet)\nFiş No: ${fisNo}`);
+  inputs.forEach(input => input.value = '');
+}
+
+function showPendingApprovals(teknisyen) {
+  closeDropdowns(teknisyen);
+  const container = document.getElementById("pending-" + teknisyen);
+  container.innerHTML = "✅ Onay bekleyen işlemlerinizi aşağıda bulabilirsiniz.<br><br>";
+
+  let hasPending = false;
+
+  pendingTransfers.forEach((transfer, index) => {
+    if (transfer.to === teknisyen) {
+      hasPending = true;
+      const div = document.createElement("div");
+      div.classList.add("pending-box");
+      div.innerHTML = `
+        <b>Gönderen:</b> ${transfer.from.toUpperCase()}<br>
+        <b>Malzeme:</b> ${transfer.material}<br>
+        <b>Adet:</b> ${transfer.quantity}<br>
+        <b>Fiş No:</b> ${transfer.fisNo}<br>
+        <button onclick="approveTransfer(${index}, '${teknisyen}')">Onayla</button>
+        <button onclick="rejectTransfer(${index}, '${teknisyen}')">İptal</button>
+      `;
+      container.appendChild(div);
+    }
+  });
+
+  if (!hasPending) {
+    container.innerHTML += "<i>Bekleyen transfer bulunmamaktadır.</i>";
+  }
+
+  container.style.display = 'block';
+}
+
+function approveTransfer(index, teknisyen) {
+  const transfer = pendingTransfers[index];
+  const stokTableId = "stok-" + teknisyen;
+  const targetTableId = "stok-" + transfer.from;
+  const material = transfer.material;
+  const quantity = parseInt(transfer.quantity, 10);
+
+  const rows = document.querySelectorAll(`#${stokTableId} tbody tr`);
+  let stokYetersiz = false;
+
+  rows.forEach(row => {
+    if (row.cells[0].innerText === material) {
+      const mevcutAdet = parseInt(row.cells[2].innerText);
+      if (mevcutAdet < quantity) {
+        stokYetersiz = true;
+      }
+    }
+  });
+
+  if (stokYetersiz) {
+    alert("⚠️ Yetersiz stok. Transfer onaylanamaz.");
+    return;
+  }
+
+  rows.forEach(row => {
+    if (row.cells[0].innerText === material) {
+      row.cells[2].innerText = parseInt(row.cells[2].innerText) - quantity;
+    }
+  });
+
+  const targetRows = document.querySelectorAll(`#${targetTableId} tbody tr`);
+  targetRows.forEach(row => {
+    if (row.cells[0].innerText === material) {
+      row.cells[2].innerText = parseInt(row.cells[2].innerText) + quantity;
+    }
+  });
+
+  alert("✅ Transfer başarıyla onaylandı.");
+  pendingTransfers.splice(index, 1);
+  showPendingApprovals(teknisyen);
+}
+
+function rejectTransfer(index, teknisyen) {
+  pendingTransfers.splice(index, 1);
+  alert("❌ Transfer talebi iptal edildi.");
+  showPendingApprovals(teknisyen);
+}
+</script>
+</body>
+</html>
